@@ -4526,3 +4526,12 @@ details > p {
 }
 .plan-card { min-width: 0; }
 .plan-card .button { white-space: normal; text-align: center; }
+.install-button { gap: 8px; font-size: 12px; white-space: normal; }
+.sidebar-bottom > .install-button { width: 100%; margin-bottom: 12px; }
+.footer-links .install-button { margin-top: 4px; align-self: flex-start; }
+.install-intro { display: flex; gap: 14px; align-items: center; color: #647758; margin: 14px 0 24px; }
+.install-intro svg { flex-shrink: 0; }
+.install-intro p, .install-help { font-size: 14px; line-height: 1.7; }
+.install-steps { padding-left: 22px; color: #647061; font-size: 14px; line-height: 1.8; margin: 14px 0 24px; }
+.install-steps li { margin: 9px 0; }
+.install-help { color: #76816f; margin: 14px 0; }

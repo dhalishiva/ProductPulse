@@ -16,6 +16,7 @@ import {
 } from "./pages/WorkspacePages";
 import { Help, Legal, LegalDocument, NotFound } from "./pages/Information";
 import "./styles.css";
+import "./pwa";
 function NavigationEffects() {
   const { pathname, hash } = useLocation();
   useEffect(() => {

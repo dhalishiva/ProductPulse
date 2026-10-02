@@ -11,6 +11,7 @@ import {
   FlaskConical,
 } from "lucide-react";
 const articles = [
+  { category: "Getting started", q: "How do I install ProductPulse on my phone?", a: "Choose Install ProductPulse in the app menu or website footer. On Android, use the install prompt or Chrome’s menu → Install app. On iPhone or iPad, open this site in Safari, tap Share, then Add to Home Screen. Keep Open as Web App enabled if shown. The installed app opens your workspace directly. The demo can open offline after its first successful load; live analytics will still require internet access." },
   {
     category: "Getting started",
     q: "What can I do in the demo?",

@@ -17,6 +17,7 @@ import {
   Globe,
   X,
 } from "lucide-react";
+import { InstallApp } from "./InstallApp";
 import { Brand } from "./UI";
 import { useWorkspace } from "../state/Workspace";
 const nav = [
@@ -99,6 +100,7 @@ export default function AppLayout() {
               View your plan <CreditCard size={14} />
             </Link>
           </div>
+          <InstallApp />
           <nav aria-label="Workspace tools">
             <NavLink to="/app/settings" onClick={() => setMobile(false)}>
               <Settings2 size={18} />

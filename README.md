@@ -88,3 +88,12 @@ Deploying this frontend makes the **demo** accessible; `/app` is deliberately no
 ## Legal content
 
 Privacy, terms, and notices are marked as **draft preview documents**. They describe the demo rather than claiming unsupported compliance, partnerships, billing features, or security certifications. Operator identity and contact information remain intentionally unspecified.
+
+## Installation and link previews
+
+- Public homepage links to `/app` open a separate tab with `noopener noreferrer`.
+- Install ProductPulse is available in the app sidebar and public footer. Android/desktop browsers use the native install prompt when offered. iOS gets Share → Add to Home Screen instructions. Installed apps start at `/app` in standalone mode.
+- The production build creates a versioned service worker that precaches only static assets, with network-first page navigation and an offline shell fallback. API/auth responses are not cached. Updates activate after existing app tabs close.
+- `public/manifest.webmanifest` includes normal and maskable icons; Apple touch metadata is in `index.html`.
+- WhatsApp/Open Graph and Twitter metadata are in static HTML. The 1200×630 generated share image is `public/social-preview-v1.jpg`. Production URLs currently use `https://product-pulse-dun.vercel.app`; update these metadata URLs if the public domain changes.
+- Social apps may cache old previews. Sharing a new URL variant such as `/?share=v2` can request a fresh preview, but cache refresh is controlled by the sharing service.

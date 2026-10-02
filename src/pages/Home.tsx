@@ -170,7 +170,7 @@ export function Home() {
             internet.
           </p>
           <div className="hero-actions">
-            <Link to="/app" className="button lime large-button">
+            <Link to="/app" target="_blank" rel="noopener noreferrer" className="button lime large-button">
               Explore the demo
               <ChevronRight size={18} />
             </Link>
@@ -405,7 +405,7 @@ export function Home() {
                   Local workspace preferences
                 </li>
               </ul>
-              <Link to="/app" className="button dark">
+              <Link to="/app" target="_blank" rel="noopener noreferrer" className="button dark">
                 Open your demo workspace
               </Link>
             </article>
@@ -509,7 +509,7 @@ export function Home() {
             on the pulse.
           </h2>
           <p>Your next check-in starts here.</p>
-          <Link to="/app" className="button lime large-button">
+          <Link to="/app" target="_blank" rel="noopener noreferrer" className="button lime large-button">
             Explore ProductPulse
             <ChevronRight size={18} />
           </Link>

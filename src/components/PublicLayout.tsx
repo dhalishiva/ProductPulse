@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, NavLink, Outlet } from "react-router-dom";
 import { Menu, X, Activity } from "lucide-react";
+import { InstallApp } from "./InstallApp";
 import { Brand } from "./UI";
 export function PublicLayout() {
   const [menu, setMenu] = useState(false);
@@ -27,7 +28,7 @@ export function PublicLayout() {
             </NavLink>
           </nav>
           <div className="public-nav-actions">
-            <Link to="/app" className="button lime">
+            <Link to="/app" target="_blank" rel="noopener noreferrer" className="button lime">
               Open demo app
             </Link>
             <button
@@ -53,7 +54,8 @@ export function PublicLayout() {
             <div className="footer-links">
               <div>
                 <strong>Product</strong>
-                <Link to="/app">Demo workspace</Link>
+                <Link to="/app" target="_blank" rel="noopener noreferrer">Demo workspace</Link>
+                <InstallApp />
                 <Link to="/#features">Features</Link>
                 <Link to="/#plans">Planned plans</Link>
               </div>
