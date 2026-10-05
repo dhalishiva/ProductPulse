@@ -15,6 +15,8 @@ import {
   Billing,
 } from "./pages/WorkspacePages";
 import { Help, Legal, LegalDocument, NotFound } from "./pages/Information";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 import "./styles.css";
 import "./pwa";
 function NavigationEffects() {
@@ -93,5 +95,8 @@ createRoot(document.getElementById("root")!).render(
         </Route>
       </Routes>
     </BrowserRouter>
+    {/* Vercel Web Analytics and Speed Insights: cookieless, first-party; no-ops outside Vercel. */}
+    <Analytics />
+    <SpeedInsights />
   </StrictMode>,
 );
