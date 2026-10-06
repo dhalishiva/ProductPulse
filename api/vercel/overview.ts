@@ -1,5 +1,5 @@
 import { requireSession } from "../_lib/auth.js";
-import { allowedPeriods, liveProjects, type LivePeriod } from "../_lib/config.js";
+import { historyDays, liveProjects, resolveDays } from "../_lib/config.js";
 import { errorResponse, json, privateCache } from "../_lib/http.js";
 import { countTotals, dailySeries, windowFor } from "../_lib/vercel.js";
 
@@ -7,11 +7,8 @@ export async function GET(request: Request) {
   const denied = requireSession(request);
   if (denied) return denied;
   try {
-    const requested = Number(new URL(request.url).searchParams.get("days") ?? 28);
-    const days = (allowedPeriods as readonly number[]).includes(requested)
-      ? (requested as LivePeriod)
-      : 28;
-    const w = windowFor(days);
+    const { requested, days } = resolveDays(new URL(request.url).searchParams.get("days"));
+    const w = windowFor(days, historyDays());
 
     const projects = await Promise.all(
       liveProjects.map(async (project) => {
@@ -25,7 +22,9 @@ export async function GET(request: Request) {
         try {
           const [totals, previous, daily] = await Promise.all([
             countTotals(project.vercelProjectId, w.since, w.until),
-            countTotals(project.vercelProjectId, w.previousSince, w.previousUntil),
+            w.canCompare
+              ? countTotals(project.vercelProjectId, w.previousSince, w.previousUntil)
+              : Promise.resolve(null),
             dailySeries(project.vercelProjectId, w.since, w.until),
           ]);
           return { ...meta, totals, previous, daily };
@@ -40,6 +39,9 @@ export async function GET(request: Request) {
     return json(
       {
         days,
+        requestedDays: requested,
+        historyDays: historyDays(),
+        comparison: w.canCompare,
         since: w.since.toISOString(),
         until: w.until.toISOString(),
         generatedAt: new Date().toISOString(),

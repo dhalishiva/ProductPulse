@@ -64,7 +64,22 @@ export const liveProjects: LiveProject[] = [
 ];
 
 export const allowedPeriods = [7, 28, 90] as const;
-export type LivePeriod = (typeof allowedPeriods)[number];
+
+/**
+ * How many days of history Vercel serves for your plan. The Hobby plan allows the
+ * latest 31 days; set VERCEL_ANALYTICS_HISTORY_DAYS (1-365) if you upgrade.
+ */
+export function historyDays(): number {
+  const n = Number(process.env.VERCEL_ANALYTICS_HISTORY_DAYS);
+  return Number.isInteger(n) && n >= 1 && n <= 365 ? n : 31;
+}
+
+/** Validates ?days= and clamps it to the plan's history limit. */
+export function resolveDays(raw: string | null): { requested: number; days: number } {
+  const asked = Number(raw ?? 28);
+  const requested = (allowedPeriods as readonly number[]).includes(asked) ? asked : 28;
+  return { requested, days: Math.min(requested, historyDays()) };
+}
 
 export class ConfigError extends Error {
   constructor(public readonly variable: string) {

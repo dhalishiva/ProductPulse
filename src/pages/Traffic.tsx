@@ -132,7 +132,7 @@ function LiveTraffic({ onSignedOut }: { onSignedOut: () => void }) {
   const visitors = loaded.reduce((n, p) => n + (p.totals?.visitors ?? 0), 0);
   const pageviews = loaded.reduce((n, p) => n + (p.totals?.pageviews ?? 0), 0);
   const prevPageviews = loaded.reduce((n, p) => n + (p.previous?.pageviews ?? 0), 0);
-  const change = pctChange(pageviews, prevPageviews);
+  const change = data?.comparison ? pctChange(pageviews, prevPageviews) : null;
 
   const days: Day[] = useMemo(() => {
     const byDate = new Map<string, number>();
@@ -188,6 +188,15 @@ function LiveTraffic({ onSignedOut }: { onSignedOut: () => void }) {
         </span>
       </div>
 
+      {data && data.days < data.requestedDays && (
+        <div className="notice" role="status">
+          <Info size={16} />
+          <span>
+            Your Vercel plan keeps {data.historyDays} days of analytics, so this shows the
+            last {data.days} days instead of {data.requestedDays}.
+          </span>
+        </div>
+      )}
       {error && (
         <p role="alert" className="form-error">
           {error}
@@ -230,7 +239,11 @@ function LiveTraffic({ onSignedOut }: { onSignedOut: () => void }) {
               <strong className="metric-value">{format(pageviews)}</strong>
               <div className="metric-footer">
                 {change === null ? (
-                  <span className="metric-hint">No previous data</span>
+                  <span className="metric-hint">
+                    {data.comparison
+                      ? "No previous data"
+                      : `No comparison: needs ${data.days * 2} days of history`}
+                  </span>
                 ) : (
                   <>
                     <Change value={change} />
@@ -318,7 +331,8 @@ function Row({
   active: boolean;
   onToggle: () => void;
 }) {
-  const change = p.totals ? pctChange(p.totals.pageviews, p.previous.pageviews) : null;
+  const change =
+    p.totals && p.previous ? pctChange(p.totals.pageviews, p.previous.pageviews) : null;
   return (
     <tr>
       <td>
@@ -369,7 +383,7 @@ function Detail({
   onError,
 }: {
   project: LiveProduct;
-  days: 7 | 28 | 90;
+  days: number;
   onSignedOut: () => void;
   onError: (message: string) => void;
 }) {
@@ -396,7 +410,7 @@ function Detail({
       <div className="panel-heading">
         <div>
           <h2>{project.name} · details</h2>
-          <p>Last {days} days, by visitors.</p>
+          <p>Last {detail?.days ?? days} days, by visitors.</p>
         </div>
       </div>
       {failed ? (

@@ -119,11 +119,15 @@ export async function breakdown(
  * [since, until] for the last `days` UTC days, including today. Boundaries sit on
  * whole seconds (00:00:00 to 23:59:59) so they match Vercel's day granularity.
  */
-export function windowFor(days: number, now = new Date()) {
+export function windowFor(days: number, historyLimit: number, now = new Date()) {
   const startOfToday = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
   const since = new Date(startOfToday - (days - 1) * 86_400_000);
   const until = new Date(startOfToday + 86_400_000 - 1000);
   const previousSince = new Date(since.getTime() - days * 86_400_000);
   const previousUntil = new Date(since.getTime() - 1000);
-  return { since, until, previousSince, previousUntil };
+  // The earliest day Vercel will serve for this plan. A comparison window that
+  // starts before it would be rejected, so it is skipped instead.
+  const earliest = startOfToday - (historyLimit - 1) * 86_400_000;
+  const canCompare = previousSince.getTime() >= earliest;
+  return { since, until, previousSince, previousUntil, canCompare };
 }

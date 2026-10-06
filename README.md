@@ -111,4 +111,6 @@ Serverless functions in `api/` call Vercel's Web Analytics API with a token that
 | `PRODUCTPULSE_PASSCODE` | Passcode that unlocks the live page |
 | `SESSION_SECRET` | Random secret that signs the session cookie |
 
+On the Hobby plan Vercel serves only the latest 31 days of Web Analytics, so the 90-day range is clamped to 31 days and the "vs. previous" comparison only appears for ranges short enough to fit twice (7 days). Set the optional `VERCEL_ANALYTICS_HISTORY_DAYS` if your plan keeps more.
+
 Set them in the Vercel project settings (see `.env.example`), then redeploy. The tracked projects live in `api/_lib/config.ts`; add a row there to track another one. To run the API locally use `vercel dev` (plain `npm run dev` serves only the frontend).

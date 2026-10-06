@@ -16,11 +16,16 @@ export interface LiveProductMeta {
 }
 export type LiveProduct = LiveProductMeta &
   (
-    | { totals: Totals; previous: Totals; daily: DayPoint[]; error?: undefined }
+    | { totals: Totals; previous: Totals | null; daily: DayPoint[]; error?: undefined }
     | { error: string; totals?: undefined; previous?: undefined; daily?: undefined }
   );
 export interface LiveOverview {
-  days: Period;
+  /** Days actually returned; can be fewer than requested on plans with limited history. */
+  days: number;
+  requestedDays: number;
+  historyDays: number;
+  /** False when the previous period would fall outside the plan's history. */
+  comparison: boolean;
   since: string;
   until: string;
   generatedAt: string;
@@ -31,7 +36,7 @@ export interface BreakdownRow extends Totals {
 }
 export interface LiveDetail {
   id: string;
-  days: Period;
+  days: number;
   pages: BreakdownRow[];
   referrers: BreakdownRow[];
   countries: BreakdownRow[];
@@ -64,7 +69,7 @@ export const liveApi = {
     request<{ signedIn: boolean }>("/api/session", { method: "DELETE" }),
   overview: (days: Period) =>
     request<LiveOverview>(`/api/vercel/overview?days=${days}`),
-  detail: (id: string, days: Period) =>
+  detail: (id: string, days: number) =>
     request<LiveDetail>(
       `/api/vercel/project?id=${encodeURIComponent(id)}&days=${days}`,
     ),
