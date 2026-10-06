@@ -18,10 +18,10 @@ export async function GET(request: Request) {
     const w = windowFor(days);
 
     const [pages, referrers, countries, devices] = await Promise.all([
-      breakdown(project.vercelProject, "requestPath", w.since, w.until),
-      breakdown(project.vercelProject, "referrerHostname", w.since, w.until),
-      breakdown(project.vercelProject, "country", w.since, w.until),
-      breakdown(project.vercelProject, "deviceType", w.since, w.until),
+      breakdown(project.vercelProjectId, "requestPath", w.since, w.until),
+      breakdown(project.vercelProjectId, "referrerHostname", w.since, w.until),
+      breakdown(project.vercelProjectId, "country", w.since, w.until),
+      breakdown(project.vercelProjectId, "deviceType", w.since, w.until),
     ]);
 
     return json({ id: project.id, days, pages, referrers, countries, devices }, 200, privateCache);

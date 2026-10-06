@@ -1,11 +1,11 @@
 /**
  * The Vercel projects ProductPulse reads Web Analytics for.
- * `vercelProject` is the Vercel project name (the API accepts a name or a prj_ id).
+ * `vercelProjectId` is the Vercel project id (prj_...), shown in Project Settings -> General.
  * To add a product, add a row here — no other server change is needed.
  */
 export interface LiveProject {
   id: string;
-  vercelProject: string;
+  vercelProjectId: string;
   name: string;
   domain: string;
   color: string;
@@ -15,7 +15,7 @@ export interface LiveProject {
 export const liveProjects: LiveProject[] = [
   {
     id: "slotrecover",
-    vercelProject: "slotrecover",
+    vercelProjectId: "prj_ml5JLNkJUaYUW6SfpJR46pGhGZaT",
     name: "SlotRecover",
     domain: "slotrecover.pro",
     color: "#7567df",
@@ -23,7 +23,7 @@ export const liveProjects: LiveProject[] = [
   },
   {
     id: "paidtwice",
-    vercelProject: "paidtwice",
+    vercelProjectId: "prj_5IW6ayydfO8bOKm6niEGXD94QCK5",
     name: "PaidTwice",
     domain: "paidtwice.kriosity.in",
     color: "#3c91b9",
@@ -31,7 +31,7 @@ export const liveProjects: LiveProject[] = [
   },
   {
     id: "kriosity",
-    vercelProject: "kriosity",
+    vercelProjectId: "prj_qbW7te9TG57u9xdzCia0XFCqtb8a",
     name: "Kriosity",
     domain: "kriosity.in",
     color: "#4d9478",
@@ -39,7 +39,7 @@ export const liveProjects: LiveProject[] = [
   },
   {
     id: "beamdrop",
-    vercelProject: "beamdrop",
+    vercelProjectId: "prj_cnfz8v98npPOE6sFwXsez6UaTE7N",
     name: "BeamDrop",
     domain: "beamdrop.kriosity.in",
     color: "#c38a55",
@@ -47,7 +47,7 @@ export const liveProjects: LiveProject[] = [
   },
   {
     id: "productpulse",
-    vercelProject: "product-pulse",
+    vercelProjectId: "prj_TWu2tkUbO7kkwzQEBllM5vg9p8u4",
     name: "ProductPulse",
     domain: "product-pulse-dun.vercel.app",
     color: "#7687a5",
@@ -55,7 +55,7 @@ export const liveProjects: LiveProject[] = [
   },
   {
     id: "aegistra",
-    vercelProject: "aegistra",
+    vercelProjectId: "prj_puKulAidD3JEiMU0KTgzqpqJJLfZ",
     name: "Aegistra",
     domain: "aegistra.kriosity.in",
     color: "#b0607a",
@@ -73,7 +73,8 @@ export class ConfigError extends Error {
 }
 
 export function requireEnv(name: string): string {
-  const value = process.env[name];
+  // Trim: a stray space or newline pasted into a dashboard field breaks requests.
+  const value = process.env[name]?.trim();
   if (!value) throw new ConfigError(name);
   return value;
 }

@@ -24,9 +24,9 @@ export async function GET(request: Request) {
         };
         try {
           const [totals, previous, daily] = await Promise.all([
-            countTotals(project.vercelProject, w.since, w.until),
-            countTotals(project.vercelProject, w.previousSince, w.previousUntil),
-            dailySeries(project.vercelProject, w.since, w.until),
+            countTotals(project.vercelProjectId, w.since, w.until),
+            countTotals(project.vercelProjectId, w.previousSince, w.previousUntil),
+            dailySeries(project.vercelProjectId, w.since, w.until),
           ]);
           return { ...meta, totals, previous, daily };
         } catch (error) {

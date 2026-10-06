@@ -32,8 +32,11 @@ async function call(kind: "count" | "aggregate", params: Params): Promise<unknow
     headers: { Authorization: `Bearer ${requireEnv("VERCEL_TOKEN")}` },
     signal: AbortSignal.timeout(12_000),
   });
-  // Never include the response body or token in thrown errors.
-  if (!response.ok) throw new Error(`Vercel API returned ${response.status}`);
+  if (!response.ok) {
+    // Vercel's error body explains rejected parameters; it never contains our token.
+    const detail = (await response.text().catch(() => "")).slice(0, 300);
+    throw new Error(`Vercel API returned ${response.status} for ${kind}: ${detail}`);
+  }
   return response.json();
 }
 
@@ -112,11 +115,15 @@ export async function breakdown(
   });
 }
 
-/** [since, until] for the last `days` UTC days, including today. */
+/**
+ * [since, until] for the last `days` UTC days, including today. Boundaries sit on
+ * whole seconds (00:00:00 to 23:59:59) so they match Vercel's day granularity.
+ */
 export function windowFor(days: number, now = new Date()) {
   const startOfToday = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
   const since = new Date(startOfToday - (days - 1) * 86_400_000);
+  const until = new Date(startOfToday + 86_400_000 - 1000);
   const previousSince = new Date(since.getTime() - days * 86_400_000);
-  const previousUntil = new Date(since.getTime() - 1);
-  return { since, until: now, previousSince, previousUntil };
+  const previousUntil = new Date(since.getTime() - 1000);
+  return { since, until, previousSince, previousUntil };
 }
