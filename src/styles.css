@@ -4535,3 +4535,73 @@ details > p {
 .install-steps { padding-left: 22px; color: #647061; font-size: 14px; line-height: 1.8; margin: 14px 0 24px; }
 .install-steps li { margin: 9px 0; }
 .install-help { color: #76816f; margin: 14px 0; }
+
+/* Live traffic (Vercel Web Analytics) */
+.live-signin {
+  max-width: 420px;
+  padding: 4px 24px 22px;
+}
+.live-gap {
+  margin-top: 18px;
+}
+.live-stats {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  margin-bottom: 18px;
+}
+.live-updated {
+  font-size: 12px;
+  margin: 10px 2px 0;
+}
+.live-breakdowns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 26px;
+  padding: 4px 2px 8px;
+}
+.live-breakdowns h3 {
+  font-size: 13px;
+  font-weight: 600;
+  margin: 0 0 10px;
+}
+.bd-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+.bd-list li {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  padding: 6px 9px;
+  font-size: 13px;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.bd-bar {
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: #eff3e8;
+  z-index: 0;
+}
+.bd-label,
+.bd-value {
+  position: relative;
+  z-index: 1;
+}
+.bd-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.bd-value {
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+}
+.bd-value small {
+  color: #87919e;
+}

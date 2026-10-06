@@ -15,6 +15,7 @@ import {
   Check,
   CreditCard,
   Globe,
+  Radio,
   X,
 } from "lucide-react";
 import { InstallApp } from "./InstallApp";
@@ -22,6 +23,7 @@ import { Brand } from "./UI";
 import { useWorkspace } from "../state/Workspace";
 const nav = [
   { to: "/app", label: "Overview", icon: LayoutDashboard, end: true },
+  { to: "/app/traffic", label: "Live traffic", icon: Radio },
   { to: "/app/products", label: "Products", icon: Layers3 },
   { to: "/app/acquisition", label: "Acquisition", icon: ChartNoAxesCombined },
   { to: "/app/alerts", label: "Insights & alerts", icon: Bell },
@@ -169,7 +171,11 @@ export default function AppLayout() {
           )}
         </main>
         <footer className="app-footer">
-          <span>Sample data · through Sep 30, 2026 · no live connections</span>
+          <span>
+            {location.pathname === "/app/traffic"
+              ? "Live Vercel Web Analytics · other pages show sample data"
+              : "Sample data · through Sep 30, 2026 · no live connections"}
+          </span>
           <span>
             <Link to="/privacy">Privacy</Link>
             <Link to="/terms">Terms</Link>

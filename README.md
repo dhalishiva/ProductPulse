@@ -26,6 +26,7 @@ On Windows, run these commands in PowerShell from this repository folder. No env
 | ------------------- | --------------------------------------------------------------- |
 | `/`                 | Sales homepage, product preview, features, planned plans, FAQ   |
 | `/app`              | Portfolio metrics, period/source selectors, CSV export          |
+| `/app/traffic`      | **Live** Vercel Web Analytics for six products (passcode-protected) |
 | `/app/products`     | Searchable product grid/list and add-product dialog             |
 | `/app/products/:id` | Individual metrics, sources, page breakdown, removal            |
 | `/app/acquisition`  | Product-filtered acquisition and search performance             |
@@ -44,7 +45,8 @@ On Windows, run these commands in PowerShell from this repository folder. No env
 - All analytics and insights are **illustrative**. Named products and domains do not imply live access.
 - The demo is anchored to September 30, 2026. Daily user/visitor totals are daily sums, not deduplicated people across dates or sites.
 - Sample alerts are fixed examples, not a live anomaly engine. Thresholds and briefing options save preferences but do not send messages.
-- There is **no authentication, backend, database, OAuth, payment processing, or external analytics access** in this frontend.
+- **Live Vercel data:** `/app/traffic` reads real Vercel Web Analytics through serverless functions in `api/` (see below). Everything else in the app is still demo data.
+- The demo pages have **no authentication, database, OAuth, payment processing, or Google access**.
 - Adding a product starts with no data. Connecting a demo source enables sample metrics. Disconnecting hides that source's metrics.
 - State is stored under `productpulse:demo:v1` on the current browser/device. Invalid saved data falls back to the demo. Storage failures display a notice.
 - Do not enter sensitive data or real credentials.
@@ -97,3 +99,16 @@ Privacy, terms, and notices are marked as **draft preview documents**. They desc
 - `public/manifest.webmanifest` includes normal and maskable icons; Apple touch metadata is in `index.html`.
 - WhatsApp/Open Graph and Twitter metadata are in static HTML. The 1200×630 generated share image is `public/social-preview-v1.jpg`. Production URLs currently use `https://product-pulse-dun.vercel.app`; update these metadata URLs if the public domain changes.
 - Social apps may cache old previews. Sharing a new URL variant such as `/?share=v2` can request a fresh preview, but cache refresh is controlled by the sharing service.
+
+## Live Vercel analytics (`/app/traffic`)
+
+Serverless functions in `api/` call Vercel's Web Analytics API with a token that never reaches the browser, behind a single-owner passcode.
+
+| Variable | Purpose |
+| --- | --- |
+| `VERCEL_TOKEN` | Vercel access token for your team |
+| `VERCEL_TEAM_ID` | Your team id (`team_...`) |
+| `PRODUCTPULSE_PASSCODE` | Passcode that unlocks the live page |
+| `SESSION_SECRET` | Random secret that signs the session cookie |
+
+Set them in the Vercel project settings (see `.env.example`), then redeploy. The tracked projects live in `api/_lib/config.ts`; add a row there to track another one. To run the API locally use `vercel dev` (plain `npm run dev` serves only the frontend).

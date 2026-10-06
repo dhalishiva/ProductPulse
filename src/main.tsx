@@ -6,6 +6,7 @@ import AppLayout from "./components/AppLayout";
 import { PublicLayout } from "./components/PublicLayout";
 import { Home } from "./pages/Home";
 import { Dashboard } from "./pages/Dashboard";
+import { Traffic } from "./pages/Traffic";
 import { Products, ProductDetail } from "./pages/Products";
 import {
   Acquisition,
@@ -25,6 +26,7 @@ function NavigationEffects() {
     const titles: Record<string, string> = {
       "/": "Every product. One clear view.",
       "/app": "Overview",
+      "/app/traffic": "Live traffic",
       "/app/products": "Products",
       "/app/acquisition": "Acquisition",
       "/app/alerts": "Insights & alerts",
@@ -84,6 +86,7 @@ createRoot(document.getElementById("root")!).render(
           }
         >
           <Route index element={<Dashboard />} />
+          <Route path="traffic" element={<Traffic />} />
           <Route path="products" element={<Products />} />
           <Route path="products/:id" element={<ProductDetail />} />
           <Route path="acquisition" element={<Acquisition />} />
